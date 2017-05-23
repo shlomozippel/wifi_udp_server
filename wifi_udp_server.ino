@@ -77,6 +77,15 @@ void setup() {
   //FastLED.addLeds<WS2812, DATA_PIN, RGB>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
   leds_on(true);
 
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(12, OUTPUT);
+  //digitalWrite(12, 0);
+
+  analogWrite(4, 800);  // G 
+  analogWrite(5, 500);  // R
+  analogWrite(12, 300); // B
+
   // WiFi & network stuff
   setupWiFi();
 

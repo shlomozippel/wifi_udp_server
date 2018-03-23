@@ -1,5 +1,5 @@
-#define FASTLED_ESP8266_RAW_PIN_ORDER
-#define FASTLED_INTERRUPT_RETRY_COUNT 0
+//#define FASTLED_ESP8266_RAW_PIN_ORDER
+//#define FASTLED_INTERRUPT_RETRY_COUNT 0
 #include <FastLED.h>
 
 #include <ESP8266WiFi.h>          //ESP8266 Core WiFi Library (you most likely already have this in your sketch)
@@ -30,9 +30,8 @@ const short UDP_PORT  =  1337;
 
 #define NUM_LEDS  150
 #define FRAMERATE 120
-#define DATA_PIN  13
-#define CLOCK_PIN 14
-#define LEDS_EN_PIN 15
+#define DATA_PIN  D7
+#define CLOCK_PIN D5
 
 CRGB leds[NUM_LEDS];
 bool rainbow = true;
@@ -45,9 +44,6 @@ metadata_t md = {
 
 uint8_t pong[] = {13,37};
 
-void leds_on(bool onoff) {
-    digitalWrite(LEDS_EN_PIN, onoff);
-}
 
 WiFiManager wifiManager;
 WiFiUDP Udp;
@@ -75,16 +71,6 @@ void setup() {
   pinMode(LEDS_EN_PIN, OUTPUT);
   FastLED.addLeds<APA102, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
   //FastLED.addLeds<WS2812, DATA_PIN, RGB>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
-  leds_on(true);
-
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(12, OUTPUT);
-  //digitalWrite(12, 0);
-
-  analogWrite(4, 800);  // G 
-  analogWrite(5, 500);  // R
-  analogWrite(12, 300); // B
 
   // WiFi & network stuff
   setupWiFi();
@@ -93,7 +79,7 @@ void setup() {
 }
 
 void loop() {
-      uint8_t command;
+    uint8_t command;
     int packet_size = Udp.parsePacket();
     if (packet_size) {
         Udp.read(&command, sizeof(command));
